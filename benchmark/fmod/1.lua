@@ -1,0 +1,1 @@
+out = math.fmod(__i, 10)

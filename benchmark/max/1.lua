@@ -1,0 +1,1 @@
+out = math.max(x, y)

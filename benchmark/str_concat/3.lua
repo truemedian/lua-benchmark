@@ -1,0 +1,1 @@
+out = bs; for i = 1, 9 do out = out .. bs end

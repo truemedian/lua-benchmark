@@ -1,0 +1,1 @@
+local test = class.test; out = test(class); out = test(class); out = test(class)

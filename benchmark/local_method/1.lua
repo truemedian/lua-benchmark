@@ -1,0 +1,1 @@
+out = class:test(); out = class:test(); out = class:test()

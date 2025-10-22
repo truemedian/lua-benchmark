@@ -1,0 +1,1 @@
+local x, pow = 10, math.pow

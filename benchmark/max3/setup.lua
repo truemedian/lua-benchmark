@@ -1,0 +1,1 @@
+local max, x, y, z = math.max, 1, 100, 55

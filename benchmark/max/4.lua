@@ -1,0 +1,1 @@
+out = x > y and x or y

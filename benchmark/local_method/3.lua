@@ -1,0 +1,1 @@
+out = ltest(class); out = ltest(class); out = ltest(class)

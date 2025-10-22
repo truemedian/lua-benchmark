@@ -1,0 +1,1 @@
+out = {}; for i = x, y do out[i - x + 1] = a[i] end

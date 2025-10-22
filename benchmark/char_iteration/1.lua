@@ -1,0 +1,1 @@
+for i = 1, #text do out = text:sub(i, i) end

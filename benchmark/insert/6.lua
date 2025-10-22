@@ -1,0 +1,1 @@
+out[count] = __i; count = count + 1

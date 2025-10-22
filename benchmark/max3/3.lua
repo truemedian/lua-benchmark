@@ -1,0 +1,1 @@
+if x > y and x > z then out = x elseif y > z and y > x then out = y else out = z end

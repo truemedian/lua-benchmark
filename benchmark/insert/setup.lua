@@ -1,0 +1,1 @@
+local tinsert = table.insert

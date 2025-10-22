@@ -1,0 +1,1 @@
+out = table.new(y - x, 0); for i = x, y do out[i - x + 1] = a[i] end

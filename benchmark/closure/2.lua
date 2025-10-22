@@ -1,0 +1,1 @@
+out = f1(1, 2, function(a) return a * 2 end)

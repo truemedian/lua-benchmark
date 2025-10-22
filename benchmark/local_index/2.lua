@@ -1,0 +1,1 @@
+out = math.sin(3.14)

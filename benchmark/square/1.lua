@@ -1,0 +1,1 @@
+out = math.pow(x, 2)

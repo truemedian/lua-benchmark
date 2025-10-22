@@ -1,0 +1,1 @@
+out = t_local(3)

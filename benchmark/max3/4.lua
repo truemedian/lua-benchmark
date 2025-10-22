@@ -1,0 +1,1 @@
+out = (x > y and x > z and x) or (y > z and y > x and y) or (z)

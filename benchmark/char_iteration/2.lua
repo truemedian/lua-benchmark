@@ -1,0 +1,1 @@
+for c in gmatch(text, ".") do out = c end

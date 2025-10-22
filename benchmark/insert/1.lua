@@ -1,0 +1,1 @@
+tinsert(out, __i)

@@ -1,0 +1,1 @@
+out = max(x, y, z)

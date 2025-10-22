@@ -1,0 +1,1 @@
+for i = 0, #text - 1 do out = char(cstr[i]) end

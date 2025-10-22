@@ -1,0 +1,1 @@
+if not x then out = 1 else out = x end

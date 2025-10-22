@@ -1,0 +1,1 @@
+out = ffi.new("int[3]"); out[0] = 1; out[1] = 2; out[2] = 3
