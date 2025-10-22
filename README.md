@@ -4,7 +4,7 @@
 This repository contains a collection of benchmarks that are used to measure the performance of Lua interpreters and
 implementations, particularly in choosing which algorithm is best suited for a given task.
 
-**[View Benchmarks](benchmarks/)**
+**[View Benchmarks](benchmark.md)**
 
 ## Adding a new Benchmark
 
