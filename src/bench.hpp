@@ -22,10 +22,14 @@
 
 namespace bench {
 
-static constexpr unsigned measure_iterations = 1'000;
+// take this many samples per case
+static unsigned measure_iterations = 10'000;
 
-static constexpr unsigned tune_iterations = 1'000;
-static constexpr unsigned tune_target = 1'000'000;
+// average the tuning over this many iterations
+static unsigned tune_iterations = 10;
+
+// by default aim for 1ms per measurement
+static unsigned tune_target = 1'000'000;
 
 static std::string environment_name = "missing";
 static std::string environment_path = "missing";
@@ -174,6 +178,8 @@ struct benchmark {
     std::string path;
     std::string setup = {};
     std::string setup_local = {};
+
+    int saved_top = 0;
     int metadata = LUA_NOREF;
     unsigned current_id = 0;
 
@@ -191,6 +197,8 @@ struct benchmark {
     }
 
     bool load(lua_State* L) {
+        saved_top = lua_gettop(L);
+
         std::string metadata_content = read_file(path + "/meta.lua");
         if (metadata_content.empty()) {
             std::cerr << "[bench] error: no meta.lua found in '" << path << "'" << std::endl;
@@ -221,6 +229,8 @@ struct benchmark {
             luaL_unref(L, LUA_REGISTRYINDEX, metadata);
             metadata = LUA_NOREF;
         }
+
+        lua_settop(L, saved_top);
     }
 
     std::string name(lua_State* L) const {
@@ -308,15 +318,14 @@ struct benchmark {
         return run2 - run1;
     }
 
-    lua_Integer tune(lua_State* L) const {
-        lua_Integer parameter = 0;
+    std::tuple<lua_Integer, lua_Integer> tune_bounds(lua_State* L) const {
+        lua_Integer low_parameter = 0;
+        lua_Integer high_parameter = 0;
 
-        for (unsigned i = 0; i < 10; ++i) {
+        for (unsigned i = 0; i < tune_iterations; ++i) {
             lua_Integer n = 128;
 
             while (true) {
-                n *= 2;
-
                 int64_t taken = run(L, n);
                 if (taken == INT64_MIN)
                     break;
@@ -324,18 +333,49 @@ struct benchmark {
                     continue;
 
                 int64_t elapsed = timer::tick2ns(taken);
-                if (elapsed >= tune_target)
+                if (elapsed > tune_target)
                     break;
-                if (elapsed <= -100'000) {
-                    std::cerr << "[bench] warning: '" << name(L) << "' test " << current_id << " at least partially optimized away" << std::endl;
+
+                n *= 2;
+            }
+
+            low_parameter += n / 2;
+            high_parameter += n * 2;
+        }
+
+        return { low_parameter / tune_iterations, high_parameter / tune_iterations };
+    }
+
+    lua_Integer tune(lua_State* L) const {
+        auto [low_bound, high_bound] = tune_bounds(L);
+
+        lua_Integer best = 0;
+
+        for (unsigned i = 0; i < tune_iterations; ++i) {
+            lua_Integer low = low_bound;
+            lua_Integer high = high_bound;
+
+            while (low + 1 < high) {
+                lua_Integer mid = (low + high) / 2;
+
+                int64_t taken = run(L, mid);
+                if (taken == INT64_MIN)
                     return 0;
+                if (taken <= 0)
+                    continue;
+
+                int64_t elapsed = timer::tick2ns(taken);
+                if (elapsed < tune_target) {
+                    low = mid;
+                } else {
+                    high = mid;
                 }
             }
 
-            parameter += n;
+            best += low;
         }
 
-        return parameter / 10;
+        return best / tune_iterations;
     }
 
     bool measure(lua_State* L, lua_Integer parameter, result& res) {

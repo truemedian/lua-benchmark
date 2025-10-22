@@ -83,8 +83,8 @@ for _, test in ipairs(tests) do
 			table.insert(lines, "")
 			table.insert(lines, "### " .. names[i])
 			table.insert(lines, "")
-			table.insert(lines, "| Test | Min | Q25 | Median | Q75 | Max | Mean | Stddev | Cost |")
-			table.insert(lines, "|------|-----|-----|--------|-----|-----|------|--------|------|")
+			table.insert(lines, "| Test | Min | Q25 | Median | Q75 | Max | Mean | Stddev | Cost | Outliers |")
+			table.insert(lines, "|------|-----|-----|--------|-----|-----|------|--------|------|----------|")
 
 			local fastest_median = math.huge
 			for _, result in pairs(test.results[env]) do
@@ -99,10 +99,19 @@ for _, test in ipairs(tests) do
 				if result then
 					local ratio = result.median / fastest_median
 
+					local outliers = 0
+					for _, v in ipairs(result.samples) do
+						if v < result.average - 3 * result.stddev then
+							outliers = outliers + 1
+						elseif v > result.average + 3 * result.stddev then
+							outliers = outliers + 1
+						end
+					end
+
 					table.insert(
 						lines,
 						string.format(
-							"| `%s` | %s | %s | %s | %s | %s | %s | %s | %.2fx |",
+							"| `%s` | %s | %s | %s | %s | %s | %s | %s | %.2fx | %d (%.1f%%) |",
 							test[id].id,
 							format(result.min),
 							format(result.q25),
@@ -111,11 +120,13 @@ for _, test in ipairs(tests) do
 							format(result.max),
 							format(result.average),
 							format(result.stddev),
-							ratio
+							ratio,
+							outliers,
+							(outliers / #result.samples) * 100
 						)
 					)
 				else
-					table.insert(lines, string.format("| `%s` | - | - | - | - | - | - | - | - |", test[id].id))
+					table.insert(lines, string.format("| `%s` | - | - | - | - | - | - | - | - | - |", test[id].id))
 				end
 			end
 		end

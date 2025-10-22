@@ -1,4 +1,4 @@
-CFLAGS = -g -Og -Wall -Wextra -Wpedantic -std=c++23 -fsanitize=undefined
+CFLAGS = -g -O2 -Wall -Wextra -Wpedantic -std=c++23 -fsanitize=undefined
 
 LUA51_CFLAGS = $(shell pkg-config --cflags lua5.1)
 LUA51_LIBS = $(shell pkg-config --libs lua5.1)

@@ -58,6 +58,7 @@ void run_benchmark(lua_State* L, const std::string& path) {
     bench::benchmark bm("benchmark/" + path);
     bm.load(L);
     bm.do_all_the_work(L);
+    bm.discard(L);
 }
 
 void run_all_benchmarks(lua_State* L) {

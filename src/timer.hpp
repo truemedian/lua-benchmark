@@ -66,7 +66,7 @@ static inline int64_t measure_frequency() {
     int64_t nanoseconds = 0;
 
     // time to guess...
-    for (; nanoseconds < 5'000'000'000;) {
+    for (; nanoseconds < 1'000'000'000;) {
         int64_t ns_before = std::chrono::high_resolution_clock::now().time_since_epoch().count();
         uint64_t start = read();
         std::this_thread::sleep_for(std::chrono::milliseconds(1));
