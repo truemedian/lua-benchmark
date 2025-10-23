@@ -75,7 +75,7 @@ for _, test in ipairs(tests) do
 	table.insert(lines, "|------|------|")
 
 	for id, code in ipairs(test.code) do
-		table.insert(lines, "| `" .. test[id].id .. "` | `" .. code:match("^(.-)%s*$") .. "` |")
+		table.insert(lines, "| `" .. test[id].id .. "` | `" .. code:match("^(.-)%s*$"):gsub("|", "\\|") .. "` |")
 	end
 
 	for i, env in ipairs(order) do

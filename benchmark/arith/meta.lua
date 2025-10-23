@@ -19,13 +19,13 @@ return {
 		id = "mod",
 	},
 	{
+		id = "exp",
+	},
+	{
 		id = "math.exp",
 	},
 	{
 		id = "math.log",
-	},
-	{
-		id = "exp",
 	},
 	{
 		luajit = true,
