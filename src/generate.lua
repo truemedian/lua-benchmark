@@ -39,6 +39,20 @@ end)
 
 local lines = {}
 
+local function optimized(time)
+	if time < 0.3 then -- throw out results that claim to take ~1 clock cycle per operation
+		return '*'
+	elseif time < 1e3 then
+		return string.format("%.3fns", time)
+	elseif time < 1e6 then
+		return string.format("%.3fµs", time / 1e3)
+	elseif time < 1e9 then
+		return string.format("%.3fms", time / 1e6)
+	else
+		return string.format("%.3fs", time / 1e9)
+	end
+end
+
 local function format(time)
 	if time < 1e3 then
 		return string.format("%.3fns", time)
@@ -72,7 +86,7 @@ for _, test in ipairs(tests) do
 	end
 
 	table.insert(lines, "| Test | Code |")
-	table.insert(lines, "|------|------|")
+	table.insert(lines, "| ----:| ---- |")
 
 	for id, code in ipairs(test.code) do
 		table.insert(lines, "| `" .. test[id].id .. "` | `" .. code:match("^(.-)%s*$"):gsub("|", "\\|") .. "` |")
@@ -84,7 +98,7 @@ for _, test in ipairs(tests) do
 			table.insert(lines, "### " .. names[i])
 			table.insert(lines, "")
 			table.insert(lines, "| Test | Min | Q25 | Median | Q75 | Max | Mean | Stddev | Cost | Outliers |")
-			table.insert(lines, "|------|-----|-----|--------|-----|-----|------|--------|------|----------|")
+			table.insert(lines, "| ----:|:---:|:---:|:------:|:---:|:---:|:----:|:------:|:----:|:--------:|")
 
 			local fastest_median = math.huge
 			for _, result in pairs(test.results[env]) do
@@ -113,12 +127,12 @@ for _, test in ipairs(tests) do
 						string.format(
 							"| `%s` | %s | %s | %s | %s | %s | %s | %s | %.2fx | %d (%.1f%%) |",
 							test[id].id,
-							format(result.min),
-							format(result.q25),
-							format(result.median),
-							format(result.q75),
-							format(result.max),
-							format(result.average),
+							optimized(result.min),
+							optimized(result.q25),
+							optimized(result.median),
+							optimized(result.q75),
+							optimized(result.max),
+							optimized(result.average),
 							format(result.stddev),
 							ratio,
 							outliers,
