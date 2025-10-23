@@ -1,3 +1,3 @@
-for i = 1, #a do
+for i = 1, a.n do
 	out = a[i]
 end

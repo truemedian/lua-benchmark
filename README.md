@@ -4,7 +4,27 @@
 This repository contains a collection of benchmarks that are used to measure the performance of Lua interpreters and
 implementations, particularly in choosing which algorithm is best suited for a given task.
 
+Intended to serve as an updated and more comprehensive alternative to [Spar's LuaJIT Benchmarks](https://gitspartv.github.io/LuaJIT-Benchmarks/) and the much older [CASpring Benchmarks](https://caspring.org/wiki/LuaPerformance).
+
+> We should forget about small efficiencies, say about 97% of the time: premature optimization is the root of all evil.
+>
+> Yet we should not pass up our opportunities in that critical 3%.  
+> -- Donald Knuth
+
 **[View Benchmarks](benchmark.md)**
+
+Above measurements were gathered on a single (mostly isolated) CPU core on a mostly idle system with the following
+specifications:
+
+- LuaJIT 2.1.1753364724
+- Lua 5.1.5
+- Lua 5.2.4
+- Lua 5.3.6
+- Lua 5.4.8
+
+- Linux 6.14.10-arch1-1
+- Intel i7-6700 @ 3.4GHz
+- 16GB DDR4-2133MHz
 
 ## Adding a new Benchmark
 
@@ -41,10 +61,12 @@ The resulting code that will be tested is of the form:
 <setup.lua content>
 
 return function(__n)
+    local out
     <setup_local.lua content>
     for __i = 1, __n do
         <test case content>
     end
+    return out
 end
 ```
 

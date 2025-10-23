@@ -1,6 +1,8 @@
 return {
 	name = "fmod",
-	expected = function(n) return math.fmod(n, 10) end,
+	expected = function(n)
+		return math.fmod(n, 10)
+	end,
 	{
 		id = "fmod (global)",
 	},

@@ -1,4 +1,4 @@
-local nxt = next
+local nxt, lipairs, lpairs = next, ipairs, pairs
 local len = 100
 local a = { n = len, [0] = len }
 for i = 1, len do

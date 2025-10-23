@@ -81,7 +81,7 @@ struct result {
     lua_Integer parameter = 1;
 
     void add_sample(int64_t sample) {
-        samples.push_back(double(sample) / double(parameter));
+        samples.push_back(timer::tick2ns(double(sample)) / double(parameter));
     }
 
     void done() {

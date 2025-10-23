@@ -1,1 +1,1 @@
-tinsert(out, __i)
+table.insert(out, __i)

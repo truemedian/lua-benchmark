@@ -1,3 +1,3 @@
-for i = 1, a.n do
-	out = a[i]
+for k, v in nxt, a do
+	out = v
 end

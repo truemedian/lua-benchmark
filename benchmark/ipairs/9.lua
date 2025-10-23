@@ -1,3 +1,3 @@
-for i = 1, 100 do
+for i = 1, a[0] do
 	out = a[i]
 end

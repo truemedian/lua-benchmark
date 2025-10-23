@@ -1,1 +1,1 @@
-out[count] = __i; count = count + 1
+out[0] = out[0] + 1; out[out[0]] = __i

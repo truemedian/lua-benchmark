@@ -1,1 +1,1 @@
-out[0] = out[0] + 1; out[out[0]] = __i
+out.n = out.n + 1; out[out.n] = __i

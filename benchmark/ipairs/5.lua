@@ -1,3 +1,3 @@
-for i = 1, len do
-	out = a[i]
+for k, v in next, a do
+	out = v
 end

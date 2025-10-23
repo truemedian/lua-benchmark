@@ -1,3 +1,3 @@
-for k, v in pairs(a) do
+for k, v in lipairs(a) do
 	out = v
 end

@@ -2,7 +2,10 @@ return {
     name = "table insert",
     expected = nil,
 	{
-		id = "table.insert",
+		id = "table.insert (global)",
+	},
+	{
+		id = "table.insert (local)",
 	},
 	{
 		id = "loop parameter",

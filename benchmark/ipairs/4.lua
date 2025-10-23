@@ -1,3 +1,3 @@
-for k, v in nxt, a do
+for k, v in lpairs(a) do
 	out = v
 end

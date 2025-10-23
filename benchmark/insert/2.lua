@@ -1,1 +1,1 @@
-out[__i] = __i
+tinsert(out, __i)

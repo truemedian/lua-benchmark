@@ -1,11 +1,17 @@
 return {
-    name = "ipairs iteration",
-    expected = 1000,
+	name = "ipairs iteration",
+	expected = 1000,
 	{
-		id = "ipairs",
+		id = "ipairs (global)",
 	},
 	{
-		id = "pairs",
+		id = "ipairs (local)",
+	},
+	{
+		id = "pairs (global)",
+	},
+	{
+		id = "pairs (local)",
 	},
 	{
 		id = "next (global)",
