@@ -150,55 +150,55 @@ local function bad() return false end
 
 | Test | Min | Q25 | Median | Q75 | Max | Mean | Stddev | Cost | Outliers |
 | ----:|:---:|:---:|:------:|:---:|:---:|:----:|:------:|:----:|:--------:|
-| `assert positive` | 5.243ns | 142.201ns | 150.948ns | 162.652ns | 698.157ns | 156.826ns | 31.815ns | 1.19x | 125 (1.3%) |
-| `assert negative` | 12.025ns | 726.197ns | 797.480ns | 865.468ns | 3.353µs | 815.722ns | 163.712ns | 6.28x | 113 (1.1%) |
-| `short-circuit positive` | * | 119.752ns | 127.012ns | 139.498ns | 622.861ns | 134.135ns | 33.716ns | 1.00x | 187 (1.9%) |
-| `short-circuit negative` | 23.136ns | 660.126ns | 721.877ns | 793.495ns | 3.232µs | 751.154ns | 187.900ns | 5.68x | 187 (1.9%) |
+| `assert positive` | 88.293ns | 136.203ns | 148.259ns | 158.886ns | 425.052ns | 148.484ns | 17.822ns | 1.19x | 70 (0.7%) |
+| `assert negative` | 312.402ns | 734.206ns | 792.647ns | 854.380ns | 2.964µs | 801.676ns | 98.988ns | 6.34x | 91 (0.9%) |
+| `short-circuit positive` | 74.995ns | 118.320ns | 124.926ns | 133.308ns | 291.016ns | 127.202ns | 13.357ns | 1.00x | 137 (1.4%) |
+| `short-circuit negative` | 454.679ns | 652.262ns | 708.370ns | 759.928ns | 1.228µs | 712.673ns | 85.476ns | 5.67x | 101 (1.0%) |
 
 ### Lua 5.2
 
 | Test | Min | Q25 | Median | Q75 | Max | Mean | Stddev | Cost | Outliers |
 | ----:|:---:|:---:|:------:|:---:|:---:|:----:|:------:|:----:|:--------:|
-| `assert positive` | 0.515ns | 109.598ns | 120.180ns | 131.510ns | 682.962ns | 123.529ns | 28.380ns | 1.20x | 117 (1.2%) |
-| `assert negative` | 0.589ns | 600.547ns | 642.267ns | 711.604ns | 3.038µs | 671.274ns | 141.097ns | 6.40x | 146 (1.5%) |
-| `short-circuit positive` | 10.481ns | 91.960ns | 100.397ns | 109.586ns | 540.058ns | 103.183ns | 24.702ns | 1.00x | 111 (1.1%) |
-| `short-circuit negative` | 28.162ns | 554.565ns | 592.627ns | 662.631ns | 2.452µs | 617.092ns | 114.891ns | 5.90x | 100 (1.0%) |
+| `assert positive` | 66.718ns | 109.360ns | 119.731ns | 129.028ns | 204.469ns | 120.411ns | 15.378ns | 1.22x | 107 (1.1%) |
+| `assert negative` | 104.375ns | 589.742ns | 637.260ns | 685.822ns | 2.024µs | 643.807ns | 81.946ns | 6.48x | 90 (0.9%) |
+| `short-circuit positive` | 39.960ns | 90.831ns | 98.303ns | 106.008ns | 175.524ns | 99.267ns | 12.445ns | 1.00x | 114 (1.1%) |
+| `short-circuit negative` | 292.419ns | 545.742ns | 585.572ns | 628.327ns | 1.021µs | 592.464ns | 73.153ns | 5.96x | 126 (1.3%) |
 
 ### Lua 5.3
 
 | Test | Min | Q25 | Median | Q75 | Max | Mean | Stddev | Cost | Outliers |
 | ----:|:---:|:---:|:------:|:---:|:---:|:----:|:------:|:----:|:--------:|
-| `assert positive` | 7.713ns | 92.249ns | 99.831ns | 109.412ns | 558.979ns | 103.166ns | 22.405ns | 1.19x | 106 (1.1%) |
-| `assert negative` | 3.135ns | 418.258ns | 453.087ns | 514.094ns | 2.152µs | 472.352ns | 98.782ns | 5.42x | 97 (1.0%) |
-| `short-circuit positive` | 0.337ns | 76.180ns | 83.584ns | 91.227ns | 555.746ns | 86.812ns | 25.175ns | 1.00x | 169 (1.7%) |
-| `short-circuit negative` | 2.237ns | 394.872ns | 420.045ns | 463.655ns | 1.879µs | 439.197ns | 105.312ns | 5.03x | 177 (1.8%) |
+| `assert positive` | 2.943ns | 92.201ns | 99.582ns | 107.988ns | 177.283ns | 101.262ns | 13.981ns | 1.13x | 118 (1.2%) |
+| `assert negative` | 42.247ns | 416.664ns | 443.367ns | 487.989ns | 1.882µs | 455.188ns | 65.651ns | 5.04x | 80 (0.8%) |
+| `short-circuit positive` | 46.912ns | 79.592ns | 87.905ns | 98.268ns | 455.217ns | 89.787ns | 14.905ns | 1.00x | 31 (0.3%) |
+| `short-circuit negative` | 97.966ns | 399.433ns | 430.323ns | 479.187ns | 816.892ns | 441.804ns | 63.920ns | 4.90x | 87 (0.9%) |
 
 ### Lua 5.4
 
 | Test | Min | Q25 | Median | Q75 | Max | Mean | Stddev | Cost | Outliers |
 | ----:|:---:|:---:|:------:|:---:|:---:|:----:|:------:|:----:|:--------:|
-| `assert positive` | 2.203ns | 102.753ns | 111.430ns | 121.133ns | 558.134ns | 114.657ns | 24.990ns | 1.07x | 117 (1.2%) |
-| `assert negative` | 1.999ns | 394.974ns | 435.349ns | 474.759ns | 1.917µs | 447.005ns | 96.948ns | 4.18x | 149 (1.5%) |
-| `short-circuit positive` | * | 95.133ns | 104.161ns | 117.334ns | 698.393ns | 109.831ns | 30.436ns | 1.00x | 186 (1.9%) |
-| `short-circuit negative` | 42.374ns | 376.274ns | 412.603ns | 449.030ns | 1.961µs | 423.784ns | 91.830ns | 3.96x | 136 (1.4%) |
+| `assert positive` | 3.646ns | 105.482ns | 115.711ns | 126.943ns | 981.833ns | 122.077ns | 50.352ns | 1.03x | 125 (1.3%) |
+| `assert negative` | 271.914ns | 431.146ns | 453.740ns | 516.889ns | 3.184µs | 475.678ns | 71.092ns | 4.04x | 28 (0.3%) |
+| `short-circuit positive` | 6.048ns | 100.423ns | 112.290ns | 127.927ns | 912.942ns | 118.927ns | 34.055ns | 1.00x | 142 (1.4%) |
+| `short-circuit negative` | 30.023ns | 414.753ns | 463.773ns | 536.184ns | 3.304µs | 491.121ns | 144.260ns | 4.13x | 124 (1.2%) |
 
 ### LuaJIT
 
 | Test | Min | Q25 | Median | Q75 | Max | Mean | Stddev | Cost | Outliers |
 | ----:|:---:|:---:|:------:|:---:|:---:|:----:|:------:|:----:|:--------:|
-| `assert positive` | * | 43.226ns | 46.047ns | 51.696ns | 260.771ns | 48.339ns | 11.313ns | 1.16x | 95 (0.9%) |
-| `assert negative` | 20.314ns | 1.581µs | 1.732µs | 1.908µs | 7.158µs | 1.777µs | 361.838ns | 43.54x | 121 (1.2%) |
-| `short-circuit positive` | 0.811ns | 36.758ns | 39.769ns | 45.569ns | 311.438ns | 42.485ns | 13.402ns | 1.00x | 139 (1.4%) |
-| `short-circuit negative` | 11.099ns | 1.395µs | 1.497µs | 1.632µs | 6.562µs | 1.548µs | 327.302ns | 37.65x | 113 (1.1%) |
+| `assert positive` | 3.326ns | 46.356ns | 51.494ns | 56.014ns | 351.891ns | 51.554ns | 7.290ns | 1.29x | 34 (0.3%) |
+| `assert negative` | 1.018µs | 1.794µs | 2.006µs | 2.184µs | 11.655µs | 1.996µs | 311.769ns | 50.28x | 9 (0.1%) |
+| `short-circuit positive` | 22.863ns | 37.602ns | 39.909ns | 44.590ns | 252.511ns | 41.290ns | 5.887ns | 1.00x | 45 (0.4%) |
+| `short-circuit negative` | 839.921ns | 1.468µs | 1.644µs | 1.834µs | 5.077µs | 1.649µs | 243.573ns | 41.19x | 7 (0.1%) |
 
 ### LuaJIT (Interpreter)
 
 | Test | Min | Q25 | Median | Q75 | Max | Mean | Stddev | Cost | Outliers |
 | ----:|:---:|:---:|:------:|:---:|:---:|:----:|:------:|:----:|:--------:|
-| `assert positive` | 1.597ns | 48.217ns | 62.854ns | 81.848ns | 284.057ns | 66.843ns | 21.537ns | 1.56x | 59 (0.6%) |
-| `assert negative` | 23.011ns | 1.516µs | 1.645µs | 1.790µs | 8.304µs | 1.685µs | 364.643ns | 40.77x | 109 (1.1%) |
-| `short-circuit positive` | 2.291ns | 38.299ns | 40.341ns | 44.298ns | 299.042ns | 42.488ns | 11.142ns | 1.00x | 134 (1.3%) |
-| `short-circuit negative` | 11.722ns | 1.334µs | 1.449µs | 1.570µs | 5.918µs | 1.484µs | 300.684ns | 35.93x | 140 (1.4%) |
+| `assert positive` | 22.801ns | 46.357ns | 52.990ns | 71.162ns | 131.265ns | 58.423ns | 16.590ns | 1.33x | 30 (0.3%) |
+| `assert negative` | 967.563ns | 1.529µs | 1.644µs | 1.769µs | 5.380µs | 1.665µs | 221.714ns | 41.39x | 58 (0.6%) |
+| `short-circuit positive` | 24.351ns | 37.683ns | 39.714ns | 43.198ns | 125.238ns | 40.756ns | 4.688ns | 1.00x | 91 (0.9%) |
+| `short-circuit negative` | 881.417ns | 1.496µs | 1.667µs | 1.822µs | 8.355µs | 1.670µs | 243.029ns | 41.98x | 15 (0.1%) |
 
 ## character iteration
 
