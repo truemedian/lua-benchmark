@@ -99,15 +99,15 @@ local b = 522
 
 | Test | Min | Q25 | Median | Q75 | Max | Mean | Stddev | Cost | Outliers |
 | ----:|:---:|:---:|:------:|:---:|:---:|:----:|:------:|:----:|:--------:|
-| `negate` | * | * | * | * | 0.353ns | * | 0.001ns | 1.00x | 173 (1.7%) |
-| `add` | * | * | * | * | 0.454ns | * | 0.003ns | 1.00x | 28 (0.3%) |
-| `sub` | * | * | * | * | 0.313ns | * | 0.001ns | 1.00x | 211 (2.1%) |
-| `mul` | * | * | * | * | 0.695ns | * | 0.005ns | 1.00x | 8 (0.1%) |
-| `div` | * | * | * | * | 0.389ns | * | 0.002ns | 1.00x | 94 (0.9%) |
-| `mod` | * | * | * | * | 0.753ns | * | 0.007ns | 1.00x | 20 (0.2%) |
-| `exp` | * | * | * | * | 0.689ns | * | 0.005ns | 1.00x | 12 (0.1%) |
-| `math.exp` | * | * | * | * | 0.351ns | * | 0.001ns | 1.00x | 193 (1.9%) |
-| `math.log` | * | * | * | * | 0.354ns | * | 0.002ns | 1.00x | 187 (1.9%) |
+| `negate` | * | * | * | * | 0.540ns | * | 0.004ns | 1.00x | 16 (0.2%) |
+| `add` | * | * | * | * | 0.319ns | * | 0.001ns | 1.00x | 187 (1.9%) |
+| `sub` | * | * | * | * | 0.418ns | * | 0.002ns | 1.00x | 128 (1.3%) |
+| `mul` | * | * | * | * | 0.352ns | * | 0.001ns | 1.00x | 170 (1.7%) |
+| `div` | * | * | * | * | 0.322ns | * | 0.002ns | 1.00x | 30 (0.3%) |
+| `mod` | * | * | * | * | 0.321ns | * | 0.001ns | 1.00x | 206 (2.1%) |
+| `exp` | * | * | * | * | 0.761ns | * | 0.005ns | 1.00x | 14 (0.1%) |
+| `math.exp` | * | * | * | * | 0.354ns | * | 0.002ns | 1.00x | 101 (1.0%) |
+| `math.log` | * | * | * | * | 0.327ns | * | 0.001ns | 1.00x | 200 (2.0%) |
 | `bor` | - | - | - | - | - | - | - | - | - |
 | `band` | - | - | - | - | - | - | - | - | - |
 | `bxor` | - | - | - | - | - | - | - | - | - |
@@ -130,6 +130,75 @@ local b = 522
 | `band` | - | - | - | - | - | - | - | - | - |
 | `bxor` | - | - | - | - | - | - | - | - | - |
 | `bnot` | - | - | - | - | - | - | - | - | - |
+
+## assert
+
+#### One-Time Setup
+```lua
+local function good() return true end
+local function bad() return false end
+```
+
+| Test | Code |
+| ----:| ---- |
+| `assert positive` | `pcall(function() assert(good(), "thing") end)` |
+| `assert negative` | `pcall(function() assert(bad(), "thing") end)` |
+| `short-circuit positive` | `pcall(function() local _ = good() or error("thing") end)` |
+| `short-circuit negative` | `pcall(function() local _ = bad() or error("thing") end)` |
+
+### Lua 5.1
+
+| Test | Min | Q25 | Median | Q75 | Max | Mean | Stddev | Cost | Outliers |
+| ----:|:---:|:---:|:------:|:---:|:---:|:----:|:------:|:----:|:--------:|
+| `assert positive` | 5.243ns | 142.201ns | 150.948ns | 162.652ns | 698.157ns | 156.826ns | 31.815ns | 1.19x | 125 (1.3%) |
+| `assert negative` | 12.025ns | 726.197ns | 797.480ns | 865.468ns | 3.353µs | 815.722ns | 163.712ns | 6.28x | 113 (1.1%) |
+| `short-circuit positive` | * | 119.752ns | 127.012ns | 139.498ns | 622.861ns | 134.135ns | 33.716ns | 1.00x | 187 (1.9%) |
+| `short-circuit negative` | 23.136ns | 660.126ns | 721.877ns | 793.495ns | 3.232µs | 751.154ns | 187.900ns | 5.68x | 187 (1.9%) |
+
+### Lua 5.2
+
+| Test | Min | Q25 | Median | Q75 | Max | Mean | Stddev | Cost | Outliers |
+| ----:|:---:|:---:|:------:|:---:|:---:|:----:|:------:|:----:|:--------:|
+| `assert positive` | 0.515ns | 109.598ns | 120.180ns | 131.510ns | 682.962ns | 123.529ns | 28.380ns | 1.20x | 117 (1.2%) |
+| `assert negative` | 0.589ns | 600.547ns | 642.267ns | 711.604ns | 3.038µs | 671.274ns | 141.097ns | 6.40x | 146 (1.5%) |
+| `short-circuit positive` | 10.481ns | 91.960ns | 100.397ns | 109.586ns | 540.058ns | 103.183ns | 24.702ns | 1.00x | 111 (1.1%) |
+| `short-circuit negative` | 28.162ns | 554.565ns | 592.627ns | 662.631ns | 2.452µs | 617.092ns | 114.891ns | 5.90x | 100 (1.0%) |
+
+### Lua 5.3
+
+| Test | Min | Q25 | Median | Q75 | Max | Mean | Stddev | Cost | Outliers |
+| ----:|:---:|:---:|:------:|:---:|:---:|:----:|:------:|:----:|:--------:|
+| `assert positive` | 7.713ns | 92.249ns | 99.831ns | 109.412ns | 558.979ns | 103.166ns | 22.405ns | 1.19x | 106 (1.1%) |
+| `assert negative` | 3.135ns | 418.258ns | 453.087ns | 514.094ns | 2.152µs | 472.352ns | 98.782ns | 5.42x | 97 (1.0%) |
+| `short-circuit positive` | 0.337ns | 76.180ns | 83.584ns | 91.227ns | 555.746ns | 86.812ns | 25.175ns | 1.00x | 169 (1.7%) |
+| `short-circuit negative` | 2.237ns | 394.872ns | 420.045ns | 463.655ns | 1.879µs | 439.197ns | 105.312ns | 5.03x | 177 (1.8%) |
+
+### Lua 5.4
+
+| Test | Min | Q25 | Median | Q75 | Max | Mean | Stddev | Cost | Outliers |
+| ----:|:---:|:---:|:------:|:---:|:---:|:----:|:------:|:----:|:--------:|
+| `assert positive` | 2.203ns | 102.753ns | 111.430ns | 121.133ns | 558.134ns | 114.657ns | 24.990ns | 1.07x | 117 (1.2%) |
+| `assert negative` | 1.999ns | 394.974ns | 435.349ns | 474.759ns | 1.917µs | 447.005ns | 96.948ns | 4.18x | 149 (1.5%) |
+| `short-circuit positive` | * | 95.133ns | 104.161ns | 117.334ns | 698.393ns | 109.831ns | 30.436ns | 1.00x | 186 (1.9%) |
+| `short-circuit negative` | 42.374ns | 376.274ns | 412.603ns | 449.030ns | 1.961µs | 423.784ns | 91.830ns | 3.96x | 136 (1.4%) |
+
+### LuaJIT
+
+| Test | Min | Q25 | Median | Q75 | Max | Mean | Stddev | Cost | Outliers |
+| ----:|:---:|:---:|:------:|:---:|:---:|:----:|:------:|:----:|:--------:|
+| `assert positive` | * | 43.226ns | 46.047ns | 51.696ns | 260.771ns | 48.339ns | 11.313ns | 1.16x | 95 (0.9%) |
+| `assert negative` | 20.314ns | 1.581µs | 1.732µs | 1.908µs | 7.158µs | 1.777µs | 361.838ns | 43.54x | 121 (1.2%) |
+| `short-circuit positive` | 0.811ns | 36.758ns | 39.769ns | 45.569ns | 311.438ns | 42.485ns | 13.402ns | 1.00x | 139 (1.4%) |
+| `short-circuit negative` | 11.099ns | 1.395µs | 1.497µs | 1.632µs | 6.562µs | 1.548µs | 327.302ns | 37.65x | 113 (1.1%) |
+
+### LuaJIT (Interpreter)
+
+| Test | Min | Q25 | Median | Q75 | Max | Mean | Stddev | Cost | Outliers |
+| ----:|:---:|:---:|:------:|:---:|:---:|:----:|:------:|:----:|:--------:|
+| `assert positive` | 1.597ns | 48.217ns | 62.854ns | 81.848ns | 284.057ns | 66.843ns | 21.537ns | 1.56x | 59 (0.6%) |
+| `assert negative` | 23.011ns | 1.516µs | 1.645µs | 1.790µs | 8.304µs | 1.685µs | 364.643ns | 40.77x | 109 (1.1%) |
+| `short-circuit positive` | 2.291ns | 38.299ns | 40.341ns | 44.298ns | 299.042ns | 42.488ns | 11.142ns | 1.00x | 134 (1.3%) |
+| `short-circuit negative` | 11.722ns | 1.334µs | 1.449µs | 1.570µs | 5.918µs | 1.484µs | 300.684ns | 35.93x | 140 (1.4%) |
 
 ## character iteration
 

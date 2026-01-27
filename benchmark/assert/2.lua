@@ -1,0 +1,1 @@
+pcall(function() assert(bad(), "thing") end)

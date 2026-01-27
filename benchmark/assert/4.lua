@@ -1,0 +1,1 @@
+pcall(function() local _ = bad() or error("thing") end)
