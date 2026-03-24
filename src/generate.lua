@@ -41,7 +41,7 @@ local lines = {}
 
 local function optimized(time)
 	if time < 0.3 then -- throw out results that claim to take ~1 clock cycle per operation
-		return "*"
+		return "\\*"
 	elseif time < 1e3 then
 		return string.format("%.3fns", time)
 	elseif time < 1e6 then
@@ -87,20 +87,22 @@ for _, test in ipairs(tests) do
 		table.insert(lines, "")
 	end
 
-	table.insert(lines, "| N | Test | Code |")
-	table.insert(lines, "| - | ----:| ---- |")
+	table.insert(lines, "| Test | Code |")
+	table.insert(lines, "| ----:| ---- |")
 
 	for id, code in ipairs(test.code) do
 		table.insert(
 			lines,
-			"| " .. id .. " | `" .. test[id].id .. "` | `" .. code:match("^(.-)%s*$"):gsub("|", "\\|") .. "` |"
+			"| `" .. test[id].id .. "` | `" .. code:match("^(.-)%s*$"):gsub("|", "\\|") .. "` |"
 		)
 	end
 
 	for i, env in ipairs(order) do
 		if test.results[env] then
-			table.insert(lines, "")
-			table.insert(lines, "### " .. names[i])
+			table.insert(lines, "<details>")
+			table.insert(lines, "<summary>")
+			table.insert(lines, "<b>" .. names[i] .. '</b>')
+			table.insert(lines, "</summary>")
 			table.insert(lines, "")
 			table.insert(lines, "| Test | Min | Median | Max | Mean | Stddev | Cost | Outliers |")
 			table.insert(lines, "| ----:|:---:|:------:|:---:|:----:|:------:|:----:|:--------:|")
@@ -146,51 +148,54 @@ for _, test in ipairs(tests) do
 					table.insert(lines, string.format("| `%s` | - | - | - | - | - | - | - |", test[id].id))
 				end
 			end
+
+			table.insert(lines, "")
+			table.insert(lines, "</details>")
 		end
 	end
 
-	local header = { "| Environment" }
-	local header_sep = { "| ---" }
-	for id in ipairs(test.code) do
-		table.insert(header, tostring(id))
-		table.insert(header_sep, ":---:")
+	local header = { "| Test" }
+	local header_sep = { "| -" }
+	for _, name in ipairs(names) do
+		table.insert(header, name)
+		table.insert(header_sep, "-")
 	end
 
 	table.insert(lines, "")
-	table.insert(lines, "### Median Time")
+	table.insert(lines, "#### Median Time")
 	table.insert(lines, "")
 	table.insert(lines, table.concat(header, " | ") .. " |")
 	table.insert(lines, table.concat(header_sep, " | ") .. " |")
 
-	for i, env in ipairs(order) do
-		if test.results[env] then
-			local fastest_median = math.huge
-			for _, result in pairs(test.results[env]) do
-				if result.median < fastest_median then
-					fastest_median = result.median
+	for id in ipairs(test.code) do
+		local row = { "| `" .. test[id].id .. "`" }
+
+		for i, env in ipairs(order) do
+			if test.results[env] then
+				local fastest_median = math.huge
+				for _, result in pairs(test.results[env]) do
+					if result.median < fastest_median then
+						fastest_median = result.median
+					end
 				end
-			end
 
-			local row = { "| " .. names[i] }
-
-			for id = 1, #test.code do
 				local result = test.results[env][id]
 
 				if result then
 					local ratio = result.median / fastest_median
 
-					if ratio < 1.05 then
-						table.insert(row, " **" .. format(result.median) .. "** ")
+					if ratio < 1.1 then
+						table.insert(row, " **" .. optimized(result.median) .. "** ")
 					else
-						table.insert(row, " " .. format(result.median) .. " ")
+						table.insert(row, " " .. optimized(result.median) .. " ")
 					end
 				else
 					table.insert(row, " - ")
 				end
 			end
-
-			table.insert(lines, table.concat(row, " | ") .. " |")
 		end
+
+		table.insert(lines, table.concat(row, " | ") .. " |")
 	end
 
 	table.insert(lines, "")
