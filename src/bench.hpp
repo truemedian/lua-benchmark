@@ -23,7 +23,7 @@
 namespace bench {
 
 // take this many samples per case
-static unsigned measure_iterations = 10'000;
+static unsigned measure_iterations = 5'000;
 
 // average the tuning over this many iterations
 static unsigned tune_iterations = 10;
@@ -385,6 +385,11 @@ struct benchmark {
         res.id = current_id;
         res.samples.reserve(measure_iterations);
         res.parameter = parameter;
+
+        if (environment_path == "luajit") {
+            // flush the JIT so we get at least a good max
+            luaL_dostring(L, "if jit.status() then jit.flush() end");
+        }
 
         uint64_t total_elapsed = 0;
         uint64_t last_time = timer::read();

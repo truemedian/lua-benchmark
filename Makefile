@@ -12,6 +12,9 @@ LUA53_LIBS = $(shell pkg-config --libs lua5.3)
 LUA54_CFLAGS = $(shell pkg-config --cflags lua5.4)
 LUA54_LIBS = $(shell pkg-config --libs lua5.4)
 
+LUA55_CFLAGS = $(shell pkg-config --cflags lua5.5)
+LUA55_LIBS = $(shell pkg-config --libs lua5.5)
+
 LUAJIT_CFLAGS = $(shell pkg-config --cflags luajit)
 LUAJIT_LIBS = $(shell pkg-config --libs luajit)
 
@@ -30,6 +33,9 @@ bench-lua53: src/main.cpp
 bench-lua54: src/main.cpp
 	$(CXX) -o $@ $< $(CFLAGS) $(LUA54_CFLAGS) $(LUA54_LIBS)
 
+bench-lua55: src/main.cpp
+	$(CXX) -o $@ $< $(CFLAGS) $(LUA55_CFLAGS) $(LUA55_LIBS)
+
 bench-luajit: src/main.cpp
 	$(CXX) -o $@ $< $(CFLAGS) $(LUAJIT_CFLAGS) $(LUAJIT_LIBS)
 
@@ -47,24 +53,28 @@ run-lua53: bench-lua53
 run-lua54: bench-lua54
 	$(TASKSET) ./bench-lua54 $(BENCH_ARGS)
 
+run-lua55: bench-lua55
+	$(TASKSET) ./bench-lua55 $(BENCH_ARGS)
+
 run-luajit: bench-luajit
 	$(TASKSET) ./bench-luajit $(BENCH_ARGS)
 
 run-luajit-interpreter: bench-luajit
 	$(TASKSET) ./bench-luajit --interpreter $(BENCH_ARGS)
 
-run: bench-lua51 bench-lua52 bench-lua53 bench-lua54 bench-luajit
+run: bench-lua51 bench-lua52 bench-lua53 bench-lua54 bench-lua55 bench-luajit
 	$(TASKSET) ./bench-lua51 $(BENCH_ARGS)
 	$(TASKSET) ./bench-lua52 $(BENCH_ARGS)
 	$(TASKSET) ./bench-lua53 $(BENCH_ARGS)
 	$(TASKSET) ./bench-lua54 $(BENCH_ARGS)
+	$(TASKSET) ./bench-lua55 $(BENCH_ARGS)
 	$(TASKSET) ./bench-luajit $(BENCH_ARGS)
 	$(TASKSET) ./bench-luajit --interpreter $(BENCH_ARGS)
 
 clean:
-	rm bench-lua51 bench-lua52 bench-lua53 bench-lua54 bench-luajit
+	rm bench-lua51 bench-lua52 bench-lua53 bench-lua54 bench-lua55 bench-luajit
 
 cleanall: clean
 	rm -r results
 
-bench-lua51 bench-lua52 bench-lua53 bench-lua54 bench-luajit: src/bench.hpp src/timer.hpp
+bench-lua51 bench-lua52 bench-lua53 bench-lua54 bench-lua55 bench-luajit: src/bench.hpp src/timer.hpp

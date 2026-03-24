@@ -41,7 +41,7 @@ local lines = {}
 
 local function optimized(time)
 	if time < 0.3 then -- throw out results that claim to take ~1 clock cycle per operation
-		return '*'
+		return "*"
 	elseif time < 1e3 then
 		return string.format("%.3fns", time)
 	elseif time < 1e6 then
@@ -71,6 +71,7 @@ for _, test in ipairs(tests) do
 
 	if test.setup then
 		table.insert(lines, "#### One-Time Setup")
+		table.insert(lines, "")
 		table.insert(lines, "```lua")
 		table.insert(lines, test.setup:match("^(.-)\n*$"))
 		table.insert(lines, "```")
@@ -79,17 +80,21 @@ for _, test in ipairs(tests) do
 
 	if test.setup_local then
 		table.insert(lines, "#### Per Iteration Setup")
+		table.insert(lines, "")
 		table.insert(lines, "```lua")
 		table.insert(lines, test.setup_local:match("^(.-)\n*$"))
 		table.insert(lines, "```")
 		table.insert(lines, "")
 	end
 
-	table.insert(lines, "| Test | Code |")
-	table.insert(lines, "| ----:| ---- |")
+	table.insert(lines, "| N | Test | Code |")
+	table.insert(lines, "| - | ----:| ---- |")
 
 	for id, code in ipairs(test.code) do
-		table.insert(lines, "| `" .. test[id].id .. "` | `" .. code:match("^(.-)%s*$"):gsub("|", "\\|") .. "` |")
+		table.insert(
+			lines,
+			"| " .. id .. " | `" .. test[id].id .. "` | `" .. code:match("^(.-)%s*$"):gsub("|", "\\|") .. "` |"
+		)
 	end
 
 	for i, env in ipairs(order) do
@@ -97,8 +102,8 @@ for _, test in ipairs(tests) do
 			table.insert(lines, "")
 			table.insert(lines, "### " .. names[i])
 			table.insert(lines, "")
-			table.insert(lines, "| Test | Min | Q25 | Median | Q75 | Max | Mean | Stddev | Cost | Outliers |")
-			table.insert(lines, "| ----:|:---:|:---:|:------:|:---:|:---:|:----:|:------:|:----:|:--------:|")
+			table.insert(lines, "| Test | Min | Median | Max | Mean | Stddev | Cost | Outliers |")
+			table.insert(lines, "| ----:|:---:|:------:|:---:|:----:|:------:|:----:|:--------:|")
 
 			local fastest_median = math.huge
 			for _, result in pairs(test.results[env]) do
@@ -125,12 +130,10 @@ for _, test in ipairs(tests) do
 					table.insert(
 						lines,
 						string.format(
-							"| `%s` | %s | %s | %s | %s | %s | %s | %s | %.2fx | %d (%.1f%%) |",
+							"| `%s` | %s | %s | %s | %s | %s | %.2fx | %d (%.1f%%) |",
 							test[id].id,
 							optimized(result.min),
-							optimized(result.q25),
 							optimized(result.median),
-							optimized(result.q75),
 							optimized(result.max),
 							optimized(result.average),
 							format(result.stddev),
@@ -140,9 +143,53 @@ for _, test in ipairs(tests) do
 						)
 					)
 				else
-					table.insert(lines, string.format("| `%s` | - | - | - | - | - | - | - | - | - |", test[id].id))
+					table.insert(lines, string.format("| `%s` | - | - | - | - | - | - | - |", test[id].id))
 				end
 			end
+		end
+	end
+
+	local header = { "| Environment" }
+	local header_sep = { "| ---" }
+	for id in ipairs(test.code) do
+		table.insert(header, tostring(id))
+		table.insert(header_sep, ":---:")
+	end
+
+	table.insert(lines, "")
+	table.insert(lines, "### Median Time")
+	table.insert(lines, "")
+	table.insert(lines, table.concat(header, " | ") .. " |")
+	table.insert(lines, table.concat(header_sep, " | ") .. " |")
+
+	for i, env in ipairs(order) do
+		if test.results[env] then
+			local fastest_median = math.huge
+			for _, result in pairs(test.results[env]) do
+				if result.median < fastest_median then
+					fastest_median = result.median
+				end
+			end
+
+			local row = { "| " .. names[i] }
+
+			for id = 1, #test.code do
+				local result = test.results[env][id]
+
+				if result then
+					local ratio = result.median / fastest_median
+
+					if ratio < 1.05 then
+						table.insert(row, " **" .. format(result.median) .. "** ")
+					else
+						table.insert(row, " " .. format(result.median) .. " ")
+					end
+				else
+					table.insert(row, " - ")
+				end
+			end
+
+			table.insert(lines, table.concat(row, " | ") .. " |")
 		end
 	end
 
