@@ -11,7 +11,8 @@ return {
 		lua51 = true,
 		lua52 = true,
 		lua53 = true,
-		lua54 = true,
+        lua54 = true,
+		lua55 = true,
 		id = "ffi cstr",
 	},
 }

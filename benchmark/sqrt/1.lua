@@ -1,0 +1,1 @@
+out = math.sqrt(x)

@@ -1,0 +1,1 @@
+local x, sqrt = 10, math.sqrt

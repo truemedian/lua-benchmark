@@ -1,0 +1,1 @@
+out = {}; table.move(a, x, y, 1, out)
