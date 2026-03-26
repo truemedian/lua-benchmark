@@ -1,27 +1,24 @@
 import matplotlib.pyplot as plt
 import numpy as np
 
-with open('result.csv') as f:
-    lines = f.read().splitlines()
+data = np.loadtxt('result.csv', delimiter=',')
+data = np.atleast_2d(data)
 
-points = []
-for line in lines:
-    data = line.split(',')
-    minimum = float(data[0])
+row_min = np.min(data, axis=1, keepdims=True)
+points = (data - row_min).ravel()
 
-    for value in data:
-        points.append(float(value) - minimum)
-
+mean = np.mean(points)
+median = np.median(points)
 stddev = np.std(points)
 
-print(f"Standard deviation: {stddev:.2f}.")
-print(f"Mean: {np.mean(points):.2f}.")
-print(f"Median: {np.median(points):.2f}.")
+print(f"Mean: {mean:.3f}ns")
+print(f"Median: {median:.3f}ns")
+print(f"Stddev: {stddev:.3f}ns")
 
-total = len(points)
-points = [p for p in points if p < 0.5 * stddev]
-print(f"Removed {total - len(points)} outliers. {1 - len(points) / total:.2%}.")
+total = points.size
+mask = np.all([points < 500, points > 0], axis=0)
+points = points[mask]
+print(f"Removed {total - points.size} outliers. {1 - points.size / total:.2%}.")
 
-plt.hist(points, bins=100)
-
+plt.hist(points, bins=500)
 plt.savefig('graph.png')
