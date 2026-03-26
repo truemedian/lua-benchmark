@@ -16,13 +16,14 @@ Intended to serve as an updated and more comprehensive alternative to [Spar's Lu
 Above measurements were gathered on a single (mostly isolated) CPU core on a mostly idle system with the following
 specifications:
 
-- LuaJIT 2.1.1753364724
+- LuaJIT 2.1.1772619647
 - Lua 5.1.5
 - Lua 5.2.4
 - Lua 5.3.6
 - Lua 5.4.8
+- Lua 5.5.0
 
-- Linux 6.14.10-arch1-1
+- Linux 6.18.1-arch2-1
 - Intel i7-6700 @ 3.4GHz
 - 16GB DDR4-2133MHz
 
@@ -46,7 +47,7 @@ return {
 ```
 
 Each test case can include additional fields to specify which Lua versions to skip. The valid fields are `lua51`, `lua52`,
-`lua53`, `lua54`, `luajit`, and `luajit_interpreter`. If a field is set to `true`, the test case will be skipped for that
+`lua53`, `lua54`, `lua55`, `luajit`, and `luajit_interpreter`. If a field is set to `true`, the test case will be skipped for that
 Lua version.
 
 The benchmark directory should also include one or more Lua files that implement the benchmark logic. Each Lua file
